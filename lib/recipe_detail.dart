@@ -16,7 +16,7 @@ class RecipeDetail extends StatefulWidget {
 }
 
 class _RecipeDetailState extends State<RecipeDetail> {
-  // TODO: Add _sliderVal here
+  int _sliderVal = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +61,32 @@ class _RecipeDetailState extends State<RecipeDetail> {
 
                   // 9 NOTE: A Text that uses string interpolation to populate a string with runtime values. You use the ${expression} syntax inside the string literal to denote these.
                   return Text(
-                      '${ingredient.quantity} ${ingredient.measure} ${ingredient.name}');
+                      '${ingredient.quantity * _sliderVal} ${ingredient.measure} ${ingredient.name}');
                 },
               ),
             ),
+            Slider(
+              // 10 NOTE: You use min, max and divisions to define how the slider moves. In this case, it moves between the values of 1 and 10, with 10 discreet stops. That is, it can only have values of 1, 2, 3, 4, 5, 6, 7, 8, 9 or 10.
+              min: 1,
+              max: 10,
+              divisions: 10,
 
-            // TODO: Add Slider() here
+              // 11 NOTE: label updates as the _sliderVal changes and displays a scaled number of servings.
+              label: '${_sliderVal * widget.recipe.servings} servings',
+
+              // 12 NOTE: The slider works in double values, so this converts the int variable.
+              value: _sliderVal.toDouble(),
+
+              // 13 NOTE: Conversely, when the slider changes, this uses round() to convert the double slider value to an int, then saves it in _sliderVal.
+              onChanged: (newValue) {
+                setState(() {
+                  _sliderVal = newValue.round();
+                });
+              },
+              // 14 NOTE: This sets the slider’s colors to something more “on brand”. The activeColor is the section between the minimum value and the thumb, and the inactiveColor represents the rest.
+              activeColor: Colors.green,
+              inactiveColor: Colors.black,
+            ),
           ],
         ),
       ),
