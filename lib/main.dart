@@ -7,7 +7,6 @@ void main() {
 
 class RecipeApp extends StatelessWidget {
   const RecipeApp({Key? key}) : super(key: key);
-
   // This widget is the root of your application.
   // 1 NOTE: Entry point for composing together other widgets to make a new widget.
   @override
@@ -61,20 +60,60 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       // 3 NOTE: Body has SafeArea, which keeps the app from getting too close to the operating system interfaces such as the notch or interactive areas
       body: SafeArea(
-        // TODO: Replace child: Container()
         // 4 NOTE: SafeArea has a child widget, here we a list using ListView.
         child: ListView.builder(
           // 5 NOTE: itemCount determines the number of rows the list has.
           itemCount: Recipe.samples.length,
           // 6 NOTE: itemBuilder builds the widget tree for each row.
           itemBuilder: (BuildContext context, int index) {
-            // 7 NOTE: A Text widget displays the name of the recipe.
-            // TODO: Update to return Recipe card
-            return Text(Recipe.samples[index].label);
+            // 7 NOTE: Return the buildRecipeCard widget.
+            // TODO: Add GestureDetector
+            return buildRecipeCard(Recipe.samples[index]);
           },
         ),
       ),
     );
   }
-  // TODO: Add buildRecipeCard() here
+
+  Widget buildRecipeCard(Recipe recipe) {
+    // 1 NOTE: Return a Card from buildRecipeCard().
+    return Card(
+      // 1.1 NOTE: A card’s elevation determines how high off the screen the card is, affecting its shadow.
+      elevation: 2.0,
+      // 1.2 NOTE: Shape handles the shape of the card. This code defines a rounded rectangle with a 10.0 corner radius.
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+
+      // 1.3 NOTE: Padding insets its child’s contents by the specified padding value.
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+
+        // 2 NOTE: The Card’s child property is a Column
+        child: Column(
+          // 3 NOTE: The Column has two children.
+          children: [
+            // 4 NOTE: he first child is an Image widget. AssetImage states that the image is fetched from the local asset bundle defined in pubspec.yaml.
+            Image(image: AssetImage(recipe.imageUrl)),
+            // 4.1 NOTE: Between the image and text is a SizedBox. This is a blank view with a fixed size.
+            const SizedBox(
+              height: 14.0,
+            ),
+
+            // 5 NOTE: A Text widget is the second child. It will contain the recipe.label value.
+            Text(
+              recipe.label,
+              // 5.1 NOTE: We can customize Text widgets with a style object. In this case, you’ve specified a Palatino font with a size of 20.0 and a bold weight of w700.
+
+              style: const TextStyle(
+                fontFamily: 'Palatino',
+                fontSize: 20.0,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
